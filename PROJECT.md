@@ -3,7 +3,7 @@
 > Long-horizon Coding Agent Evaluation & Optimization Platform
 
 **Status:** Initial specification — implementation and performance results are pending.
-**Repository:** `reha-design/solve-loop` · **Portfolio focus:** Applied AI Engineer / Coding Agent Reliability
+**Repository:** `reha-design/solve-loop`
 
 ## Purpose
 
@@ -17,22 +17,7 @@ GitHub Issue 또는 task manifest를 입력받아 저장소 분석 → 계획 �
 
 짧은 코드 생성 데모는 여러 파일과 반복 실행이 필요한 실제 작업의 안정성을 보여주기 어렵다. 긴 작업에서는 관련 코드 누락, 컨텍스트 과잉, 잘못된 도구 호출, 환경 실패, 반복 수정, 성급한 완료 선언이 누적된다.
 
-모델 출력만 평가하면 이러한 실패가 가려진다. Solve Loop은 전체 실행 과정을 관측하고, 실패 원인을 분리하고, 하나의 개선이 성공률과 비용에 미치는 영향을 검증한다. 성공한 몇 가지 사례보다 실패를 포함한 전체 평가 결과를 포트폴리오의 중심에 둔다.
-
-## Target Job Mapping
-
-아래 매핑은 제공된 Applied AI Engineer 역할 설명에 기반한다. 특정 채용 공고의 현재 모집 상태를 주장하지 않는다.
-
-| Role requirement | Project evidence |
-| --- | --- |
-| Long-horizon agent behavior | 명시적 상태 전이, 예산 관리, 테스트 기반 복구, 중단 및 재개 기록 |
-| Evals and regression analysis | 고정 task manifest, 독립 grader, baseline/candidate 비교, 회귀 목록 |
-| Prompt, context, and tool experiments | 버전 관리된 정책, context selector ablation, 도구 오류 분석 |
-| Production reliability | timeout, API retry, worker crash, sandbox failure에 대한 fault injection |
-| Token, latency, and cost optimization | 품질·비용 Pareto 비교, 단계별 소요 시간, 토큰 사용 명세 |
-| Feedback and data systems | 실행 trace → 검토된 실패 라벨 → 새 회귀 task → 재평가 |
-| Product and user outcomes | 최종 패치, 검증 증거, 사람 개입 횟수, trace inspection UI |
-| Python and systems engineering | typed Python modules, API/worker 분리, sandbox·DB·queue 경계 |
+모델 출력만 평가하면 이러한 실패가 가려진다. Solve Loop은 전체 실행 과정을 관측하고, 실패 원인을 분리하고, 하나의 개선이 성공률과 비용에 미치는 영향을 검증한다. 성공과 실패를 포함한 전체 평가 결과를 바탕으로 시스템의 신뢰성을 판단한다.
 
 ## Non-Goals
 
@@ -260,7 +245,7 @@ Private task data, gold patches, hidden tests, secrets, raw traces, downloaded r
 | 1 — Observable Baseline | CLI, single agent loop, typed tools, Docker lifecycle, immutable events, independent grading | **M1:** smoke 5개에서 ingest → patch → grade 경로 동작. 성공/실패/timeout/infra error 기록과 cleanup 검증. **M2:** 고정 pilot 20개 baseline 실행 및 비용·trace 포함 보고서 |
 | 2 — Evaluation System | SWE-bench adapter, private task schema, DB/queue, metrics, failure review, comparison reports | **M3:** 같은 manifest를 새 run ID로 재평가 가능. 8개 핵심 지표 산출, grader 격리·실패 분모 처리 검증 |
 | 3 — Optimization MVP | context selector 1개, bounded recovery 1개, paired ablations, minimal React UI | **M4:** baseline/개별 개선/결합 버전의 동일 조건 pilot 비교. trace에서 failure label과 patch/test 증거 확인 가능. 개선 여부와 무관하게 결과·한계 공개 |
-| 4 — Portfolio Release | 미사용 holdout 50개 및 private task 평가, crash/API fault injection, 문서화 | **M5:** 3회 반복을 계획한 holdout 비교, confidence interval, 회귀 사례, 비용 trade-off와 재현 가이드 공개. 결과 불확실성은 명시 |
+| 4 — Validated Release | 미사용 holdout 50개 및 private task 평가, crash/API fault injection, 문서화 | **M5:** 3회 반복을 계획한 holdout 비교, confidence interval, 회귀 사례, 비용 trade-off와 재현 가이드 공개. 결과 불확실성은 명시 |
 
 Phase 일정은 baseline 비용과 환경 준비 결과를 확인한 뒤 정한다. 큰 benchmark 실행 전에 pilot의 실제 task당 비용으로 총 예산을 계산하고 experiment ceiling을 설정한다.
 
@@ -280,7 +265,7 @@ Phase 일정은 baseline 비용과 환경 준비 결과를 확인한 뒤 정한�
 
 성과 목표는 사전 측정된 baseline 이후 정한다. MVP 완료와 성능 향상 입증은 별개의 판단이며, negative result도 실험 조건과 증거가 충실하면 유효한 산출물이다.
 
-## Portfolio Evidence
+## Results and Reproducibility
 
 최종 README에는 baseline/candidate 지표 표, 표본 수와 confidence interval, 개선 전후 trace 사례, 실패/회귀 사례, 구조도, 재현 명령, 비용 및 평가 한계를 담는다. 각 숫자는 config·commit·manifest·run artifacts로 추적 가능해야 한다. 사용자 가치의 보조 근거는 autonomous completion, cost per solved task, 사람 개입 감소이며, 실제 검증 없이 금전적 절감 효과를 단정하지 않는다.
 
